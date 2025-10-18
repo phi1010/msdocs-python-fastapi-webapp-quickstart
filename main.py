@@ -3,6 +3,15 @@ from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
+import sys
+import os
+import logging
+log = logging.getLogger(__name__)
+formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
+stream_handler = logging.StreamHandler(sys.stderr)
+stream_handler.setFormatter(formatter)
+log.setLevel(logging.DEBUG)
+log.addHandler(stream_handler)
 
 
 app = FastAPI()
@@ -12,6 +21,8 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     print('Request for index page received')
+    log.debug(f"Headers: {dict(request.headers)!r}")
+    log.debug(f"Env: {dict(os.environ)!r}")
     return templates.TemplateResponse('index.html', {"request": request})
 
 @app.get('/favicon.ico')
