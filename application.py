@@ -53,4 +53,8 @@ try:
         uvicorn.run('main:app', host='0.0.0.0', port=8000)
 
 except Exception as e:
-    print(e, str(e), repr(e))
+    try:
+        import traceback
+        traceback.print_exc()
+    except:
+        print(e, str(e), repr(e))
