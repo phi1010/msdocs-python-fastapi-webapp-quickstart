@@ -15,6 +15,7 @@ stream_handler2.setFormatter(formatter)
 log.setLevel(logging.DEBUG)
 log.addHandler(stream_handler)
 log.addHandler(stream_handler2)
+from pprint import pformat
 
 
 app = FastAPI()
@@ -28,8 +29,8 @@ async def index(request: Request):
     log.info("info")
     log.warning(f"Headers: {dict(request.headers)!r}")
     log.warning(f"Env: {dict(os.environ)!r}")
-    print(f"Headers: {dict(request.headers)!r}")
-    print(f"Env: {dict(os.environ)!r}")
+    print(f"Headers: {pformat(dict(request.headers))}")
+    print(f"Env: {pformat(dict(os.environ))}")
     return templates.TemplateResponse('index.html', {"request": request})
 
 @app.get('/favicon.ico')
